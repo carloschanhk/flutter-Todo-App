@@ -8,12 +8,14 @@ class GridButton extends StatelessWidget {
       this.category,
       this.tasks,
       this.onTodoToggle,
-      this.parentContext});
+      this.parentContext,
+      this.removeTask,});
   final String category;
-  final Icon icon;
+  final IconData icon;
   final List tasks;
   final Function onTodoToggle;
   final BuildContext parentContext;
+  final Function removeTask;
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +25,13 @@ class GridButton extends StatelessWidget {
           category: category,
           icon: icon,
           tasks: tasks,
-          onTodoToggle: onTodoToggle
+          removeTask: removeTask,
+          onTodoToggle: onTodoToggle,
         ));
       },
       child: Column(
         children: [
-          icon,
+          Icon(icon,size: 40,),
           Container(
               child: Column(children: [
             Text(category, style: TextStyle(fontSize: 24, color: Colors.black)),

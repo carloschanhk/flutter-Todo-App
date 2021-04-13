@@ -35,6 +35,7 @@ class FlutterRouter extends _i1.RootStackRouter {
               icon: args.icon,
               category: args.category,
               tasks: args.tasks,
+              removeTask: args.removeTask,
               onTodoToggle: args.onTodoToggle));
     }
   };
@@ -73,9 +74,10 @@ class NewTaskPageRouteArgs {
 
 class TaskListPageRoute extends _i1.PageRouteInfo<TaskListPageRouteArgs> {
   TaskListPageRoute(
-      {_i5.Icon icon,
+      {_i5.IconData icon,
       String category,
       List<dynamic> tasks,
+      Function removeTask,
       Function onTodoToggle})
       : super(name,
             path: '/task-list-page',
@@ -83,6 +85,7 @@ class TaskListPageRoute extends _i1.PageRouteInfo<TaskListPageRouteArgs> {
                 icon: icon,
                 category: category,
                 tasks: tasks,
+                removeTask: removeTask,
                 onTodoToggle: onTodoToggle));
 
   static const String name = 'TaskListPageRoute';
@@ -90,13 +93,19 @@ class TaskListPageRoute extends _i1.PageRouteInfo<TaskListPageRouteArgs> {
 
 class TaskListPageRouteArgs {
   const TaskListPageRouteArgs(
-      {this.icon, this.category, this.tasks, this.onTodoToggle});
+      {this.icon,
+      this.category,
+      this.tasks,
+      this.removeTask,
+      this.onTodoToggle});
 
-  final _i5.Icon icon;
+  final _i5.IconData icon;
 
   final String category;
 
   final List<dynamic> tasks;
+
+  final Function removeTask;
 
   final Function onTodoToggle;
 }

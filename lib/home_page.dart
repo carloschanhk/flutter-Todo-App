@@ -13,42 +13,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List categories = [
-    {
-      "category": "All",
-      "icon": Icon(Icons.assignment, color: Colors.blue, size: 40),
-      "tasks": all
-    },
-    {
-      "category": "Work",
-      "icon": Icon(Icons.work, color: Colors.brown, size: 40),
-      "tasks": work
-    },
-    {
-      "category": "Health",
-      "icon": Icon(Icons.favorite, color: Colors.pink, size: 40),
-      "tasks": health
-    },
+    {"category": "All", "icon": Icons.assignment, "tasks": all},
+    {"category": "Work", "icon": Icons.work, "tasks": work},
+    {"category": "Health", "icon": Icons.favorite, "tasks": health},
     {
       "category": "Exercise",
-      "icon": Icon(FlutterIcons.running_faw5s, size: 40),
+      "icon": FlutterIcons.running_faw5s,
       "tasks": exercise
     },
-    {"category": "Home", "icon": Icon(Icons.home, size: 40), "tasks": home},
-    {
-      "category": "Travel",
-      "icon": Icon(FlutterIcons.plane_faw, size: 40),
-      "tasks": travel
-    },
-    {
-      "category": "Shopping",
-      "icon": Icon(Icons.shopping_cart, size: 40),
-      "tasks": shopping
-    },
-    {
-      "category": "Leisure",
-      "icon": Icon(Icons.park, size: 40),
-      "tasks": leisure
-    },
+    {"category": "Home", "icon": Icons.home, "tasks": exercise},
+    {"category": "Travel", "icon": FlutterIcons.plane_faw, "tasks": travel},
+    {"category": "Shopping", "icon": Icons.shopping_cart, "tasks": shopping},
+    {"category": "Leisure", "icon": Icons.park, "tasks": leisure},
   ];
   static List work = [];
   static List health = [];
@@ -58,6 +34,12 @@ class _HomePageState extends State<HomePage> {
   static List shopping = [];
   static List leisure = [];
   static List all = [];
+
+  _onTodoToggle(Todo todo, bool isChecked) {
+    setState(() {
+      todo.isDone = isChecked;
+    });
+  }
 
   _addTask(Todo todo) {
     if (todo != null) {
@@ -103,14 +85,68 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
-
+  removeTask(todo, index){
+    switch (todo.category) {
+        case "Work":
+          setState(() {
+            work.removeWhere((element) => element == todo);
+          });
+          break;
+        case "Health":
+          setState(() {
+            health.removeWhere((element) => element == todo);
+          });
+          break;
+        case "Exercise":
+          setState(() {
+            exercise.removeWhere((element) => element == todo);
+          });
+          break;
+        case "Home":
+          setState(() {
+            home.removeWhere((element) => element == todo);
+          });
+          break;
+        case "Travel":
+          setState(() {
+            travel.removeWhere((element) => element == todo);
+          });
+          break;
+        case "Shopping":
+          setState(() {
+            shopping.removeWhere((element) => element == todo);
+          });
+          break;
+        case "Leisure":
+          setState(() {
+            leisure.removeWhere((element) => element == todo);
+          });
+          break;
+      }
+      setState(() {
+        print("remove all");
+        all.removeWhere((element) => element == todo);
+      });
+  }
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
+        leading: Container(
+          padding: EdgeInsets.only(left:20),
+          child:IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        )),
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
       ),
       drawer: Drawer(
         child: ListView(
@@ -127,7 +163,8 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Container(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
               child: Text("Lists",
                   style: TextStyle(
                     color: Colors.black,
@@ -146,7 +183,9 @@ class _HomePageState extends State<HomePage> {
                             icon: categories[i]["icon"],
                             category: categories[i]["category"],
                             tasks: categories[i]["tasks"],
+                            removeTask:removeTask,
                             parentContext: context,
+                            onTodoToggle: _onTodoToggle,
                           ))))
         ],
       ),

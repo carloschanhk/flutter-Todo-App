@@ -12,6 +12,8 @@ class CategoryButton extends StatelessWidget {
         validator: (String value) {
                       if (value==null) {
                         return 'Please select a category';
+                      } else {
+                        return null;
                       }
                     },
         onChanged: (String newValue) {
