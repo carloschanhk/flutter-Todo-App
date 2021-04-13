@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Todo.dart';
 import 'gridbutton.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'new_task_page.dart';
@@ -53,22 +54,54 @@ class _HomePageState extends State<HomePage> {
   static List health = [];
   static List exercise = [];
   static List home = [];
-  static List travel = ["Japan"];
-  static List shopping = ["Apple"];
+  static List travel = [];
+  static List shopping = [];
   static List leisure = [];
-  static List all = [
-    ...work,
-    ...health,
-    ...exercise,
-    ...home,
-    ...travel,
-    ...shopping,
-    ...leisure
-  ];
+  static List all = [];
 
-  _addTask() async{
-    final task = await NewTaskPage(categories: categories,);
-
+  _addTask(Todo todo) {
+    if (todo != null) {
+      switch (todo.category) {
+        case "Work":
+          setState(() {
+            work.add(todo);
+          });
+          break;
+        case "Health":
+          setState(() {
+            health.add(todo);
+          });
+          break;
+        case "Exercise":
+          setState(() {
+            exercise.add(todo);
+          });
+          break;
+        case "Home":
+          setState(() {
+            home.add(todo);
+          });
+          break;
+        case "Travel":
+          setState(() {
+            travel.add(todo);
+          });
+          break;
+        case "Shopping":
+          setState(() {
+            shopping.add(todo);
+          });
+          break;
+        case "Leisure":
+          setState(() {
+            leisure.add(todo);
+          });
+          break;
+      }
+      setState(() {
+        all.add(todo);
+      });
+    }
   }
 
   @override
@@ -113,13 +146,15 @@ class _HomePageState extends State<HomePage> {
                             icon: categories[i]["icon"],
                             category: categories[i]["category"],
                             tasks: categories[i]["tasks"],
+                            parentContext: context,
                           ))))
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.router.push(NewTaskPageRoute(
-            categories: categories
+            categories: categories,
+            addTask: _addTask,
           ));
         },
         child: Icon(Icons.add),

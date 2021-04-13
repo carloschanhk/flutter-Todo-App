@@ -5,6 +5,7 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
+import 'package:flutter/material.dart' as _i5;
 import 'package:tutorial_1/home_page.dart' as _i2;
 import 'package:tutorial_1/new_task_page.dart' as _i3;
 import 'package:tutorial_1/task_list_page.dart' as _i4;
@@ -21,10 +22,20 @@ class FlutterRouter extends _i1.RootStackRouter {
       var args = entry.routeData
           .argsAs<NewTaskPageRouteArgs>(orElse: () => NewTaskPageRouteArgs());
       return _i1.AdaptivePage(
-          entry: entry, child: _i3.NewTaskPage(categories: args.categories));
+          entry: entry,
+          child: _i3.NewTaskPage(
+              categories: args.categories, addTask: args.addTask));
     },
     TaskListPageRoute.name: (entry) {
-      return _i1.AdaptivePage(entry: entry, child: _i4.TaskListPage());
+      var args = entry.routeData
+          .argsAs<TaskListPageRouteArgs>(orElse: () => TaskListPageRouteArgs());
+      return _i1.AdaptivePage(
+          entry: entry,
+          child: _i4.TaskListPage(
+              icon: args.icon,
+              category: args.category,
+              tasks: args.tasks,
+              onTodoToggle: args.onTodoToggle));
     }
   };
 
@@ -43,22 +54,49 @@ class HomePageRoute extends _i1.PageRouteInfo {
 }
 
 class NewTaskPageRoute extends _i1.PageRouteInfo<NewTaskPageRouteArgs> {
-  NewTaskPageRoute({List<dynamic> categories})
+  NewTaskPageRoute({List<dynamic> categories, Function addTask})
       : super(name,
             path: '/new-task-page',
-            args: NewTaskPageRouteArgs(categories: categories));
+            args:
+                NewTaskPageRouteArgs(categories: categories, addTask: addTask));
 
   static const String name = 'NewTaskPageRoute';
 }
 
 class NewTaskPageRouteArgs {
-  const NewTaskPageRouteArgs({this.categories});
+  const NewTaskPageRouteArgs({this.categories, this.addTask});
 
   final List<dynamic> categories;
+
+  final Function addTask;
 }
 
-class TaskListPageRoute extends _i1.PageRouteInfo {
-  const TaskListPageRoute() : super(name, path: '/task-list-page');
+class TaskListPageRoute extends _i1.PageRouteInfo<TaskListPageRouteArgs> {
+  TaskListPageRoute(
+      {_i5.Icon icon,
+      String category,
+      List<dynamic> tasks,
+      Function onTodoToggle})
+      : super(name,
+            path: '/task-list-page',
+            args: TaskListPageRouteArgs(
+                icon: icon,
+                category: category,
+                tasks: tasks,
+                onTodoToggle: onTodoToggle));
 
   static const String name = 'TaskListPageRoute';
+}
+
+class TaskListPageRouteArgs {
+  const TaskListPageRouteArgs(
+      {this.icon, this.category, this.tasks, this.onTodoToggle});
+
+  final _i5.Icon icon;
+
+  final String category;
+
+  final List<dynamic> tasks;
+
+  final Function onTodoToggle;
 }

@@ -9,6 +9,11 @@ class CategoryButton extends StatelessWidget {
     return Container(
       child: DropdownButtonFormField(
         hint: Text("Category"),
+        validator: (String value) {
+                      if (value==null) {
+                        return 'Please select a category';
+                      }
+                    },
         onChanged: (String newValue) {
           selectCategory(newValue);
         },

@@ -1,7 +1,8 @@
 class Todo {
-  Todo({this.title,this.isDone=false,this.note,this.todoTime});
-  final String title;
-  final bool isDone;
-  final String note;
-  final DateTime todoTime;
+  Todo({this.title,this.isDone=false,this.note,this.todoTime,this.category});
+  String title;
+  bool isDone;
+  String note;
+  DateTime todoTime;
+  String category;
 }
