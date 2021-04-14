@@ -120,24 +120,29 @@ class _TaskListPageState extends State<TaskListPage> {
                                                     AlertDialog(
                                                       title: Text("Edit Todo"),
                                                       content: Form(
-                                                        key: _formKey,
-                                                        child: Stack(children:[TextFormField(
-                                                          validator: (value) {
-                                                            if (value.isEmpty) {
-                                                              return "Please enter your task!";
-                                                            } else {
-                                                              return null;
-                                                            }
-                                                          },
-                                                          controller:
-                                                              new TextEditingController(),
-                                                          maxLines: 2,
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  hintText:
-                                                                      "What are you planning?"),
-                                                        ),
-                                                        ])),
+                                                          key: _formKey,
+                                                          child:
+                                                              Stack(children: [
+                                                            TextFormField(
+                                                              validator:
+                                                                  (value) {
+                                                                if (value
+                                                                    .isEmpty) {
+                                                                  return "Please enter your task!";
+                                                                } else {
+                                                                  return null;
+                                                                }
+                                                              },
+                                                              controller:
+                                                                  new TextEditingController(),
+                                                              maxLines: 2,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                      hintText:
+                                                                          "What are you planning?"),
+                                                            ),
+                                                            
+                                                          ])),
                                                       actions: [
                                                         TextButton(
                                                             onPressed: () {
