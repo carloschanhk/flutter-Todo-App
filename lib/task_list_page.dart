@@ -3,18 +3,24 @@ import 'package:intl/intl.dart';
 import 'Todo.dart';
 
 class TaskListPage extends StatefulWidget {
-  TaskListPage({this.icon, this.category, this.tasks, this.removeTask,this.onTodoToggle});
+  TaskListPage({this.icon, this.category, this.tasks, this.removeTask});
   final String category;
   final IconData icon;
   List tasks;
   final Function removeTask;
-  final Function onTodoToggle;
 
   @override
   _TaskListPageState createState() => _TaskListPageState();
 }
 
 class _TaskListPageState extends State<TaskListPage> {
+  _onTodoToggle(Todo todo, bool isChecked) {
+    setState(() {
+      todo.isDone = isChecked;
+    });
+  }
+
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,42 +68,112 @@ class _TaskListPageState extends State<TaskListPage> {
         ),
         Expanded(
             child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        topLeft: Radius.circular(20)),
-                    color: Colors.white),
-                child: Expanded(
-                  child: ListView.builder(
-                      itemBuilder: (context, i) {
-                        final Todo todoItem = widget.tasks[i];
-                        String formattedDate = DateFormat("EEE MMM dd, kk:mm")
-                            .format(todoItem.todoTime);
-                        return Dismissible(
-                            key: Key(todoItem.title),
-                            onDismissed: (direction) {
-                              widget.removeTask.call(todoItem,i);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("${todoItem.title} removed")));
-                            },
-                            background: Container(
-                              color: Colors.red,
-                              child: Text("Remove"),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+              color: Colors.white),
+          child: ListView.builder(
+              itemBuilder: (context, i) {
+                final Todo todoItem = widget.tasks[i];
+                String formattedDate =
+                    DateFormat("EEE MMM dd, kk:mm").format(todoItem.todoTime);
+                return Dismissible(
+                    key: Key(todoItem.title),
+                    onDismissed: (direction) {
+                      widget.removeTask.call(todoItem, i);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("${todoItem.title} removed")));
+                    },
+                    background: Container(
+                      alignment: Alignment.center,
+                      color: Colors.red,
+                      child: Text(
+                        "Remove",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
+                    child: GestureDetector(
+                        onLongPress: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                    title: Text("${todoItem.title}"),
+                                    content: Stack(children: [
+                                      Container(
+                                          child: Text(
+                                        "Time: $formattedDate",
+                                        style:
+                                            TextStyle(color: Colors.red[300]),
+                                      )),
+                                      Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 30),
+                                          child: Text("Note: ${todoItem.note}"))
+                                    ]),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    AlertDialog(
+                                                      title: Text("Edit Todo"),
+                                                      content: Form(
+                                                        key: _formKey,
+                                                        child: Stack(children:[TextFormField(
+                                                          validator: (value) {
+                                                            if (value.isEmpty) {
+                                                              return "Please enter your task!";
+                                                            } else {
+                                                              return null;
+                                                            }
+                                                          },
+                                                          controller:
+                                                              new TextEditingController(),
+                                                          maxLines: 2,
+                                                          decoration:
+                                                              InputDecoration(
+                                                                  hintText:
+                                                                      "What are you planning?"),
+                                                        ),
+                                                        ])),
+                                                      actions: [
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child:
+                                                                Text("Cancel"))
+                                                      ],
+                                                    ));
+                                          },
+                                          child: Text("Edit")),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("OK")),
+                                    ],
+                                  ));
+                        },
+                        child: CheckboxListTile(
+                            value: todoItem.isDone,
+                            title: Text(todoItem.title),
+                            subtitle: Text(
+                              formattedDate,
+                              style: TextStyle(color: Colors.red[300]),
                             ),
-                            child: CheckboxListTile(
-                                value: todoItem.isDone,
-                                title: Text(todoItem.title),
-                                subtitle: Text(
-                                  formattedDate,
-                                  style: TextStyle(color: Colors.red[300]),
-                                ),
-                                onChanged: (bool isChecked,) {
-                                  widget.onTodoToggle.call(todoItem, isChecked);
-                                }
-                                ));
-                      },
-                      itemCount: widget.tasks.length),
-                )))
+                            onChanged: (
+                              bool isChecked,
+                            ) {
+                              _onTodoToggle(todoItem, isChecked);
+                            })));
+              },
+              itemCount: widget.tasks.length),
+        ))
       ]),
     );
   }

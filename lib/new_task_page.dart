@@ -36,72 +36,75 @@ class _NewTaskPageState extends State<NewTaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        //resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text("New Task", style: TextStyle(color: Colors.black)),
           iconTheme: IconThemeData(color: Colors.black),
         ),
         body: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          validator: (value){
-                                    if (value.isEmpty){
-                                      return "Please enter your task!";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                          controller: taskController,
-                          maxLines: 8,
-                          decoration: InputDecoration(
-                              hintText: "What are you planning?"),
-                        ),
-                        Container(
-                            margin: EdgeInsets.symmetric(vertical: 20),
-                            child: Column(
-                              children: [
-                                TimeButton(
-                                  setTime: setTime,
-                                  formattedDate: formattedDate,
-                                ),
-                                TextField(
-                                  controller: noteController,
-                                  decoration: InputDecoration(
-                                      hintText: "Add Notes",
-                                      icon: Icon(Icons.note),
-                                      border: InputBorder.none),
-                                ),
-                                CategoryButton(
-                                  categories: widget.categories,
-                                  selectCategory: selectCategory,
-                                ),
-                              ],
-                            )),
-                      ],
-                    )),
-                Spacer(),
-                Row(children: [
+          key: _formKey,
+          child: Stack(
+            children: [
+            Container(
+                margin: EdgeInsets.symmetric(horizontal: 25),
+                child: ListView(children: [
+                  Container(
+                    padding: EdgeInsets.only(top:10),
+                      child: TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Please enter your task!";
+                      } else {
+                        return null;
+                      }
+                    },
+                    controller: taskController,
+                    maxLines:8,
+                    decoration:
+                        InputDecoration(hintText: "What are you planning?"),
+                  )),
+                  Container(
+                    padding: EdgeInsets.only(top:20,bottom:5),
+                      child: TimeButton(
+                    setTime: setTime,
+                    formattedDate: formattedDate,
+                  )),
+                  Container(
+                    padding: EdgeInsets.only(bottom:5),
+                    child: TextField(
+                      controller: noteController,
+                      decoration: InputDecoration(
+                          hintText: "Add Notes",
+                          icon: Icon(Icons.note),
+                          border: InputBorder.none),
+                    ),
+                  ),
+                  Container(
+                    child: CategoryButton(
+                      categories: widget.categories,
+                      selectCategory: selectCategory,
+                    ),
+                  ),
+                ])),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(children: [
                   Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
-                          shape:
-                              MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                          ))),
-                      child: Text(
-                        "Create",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
+                      child: Container(
+                        height: 50,
+                        child:ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ))),
+                    child: Text(
+                      "Create",
+                      style: TextStyle(color: Colors.white,fontSize: 16),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
                         final todo = new Todo(
                             title: taskController.text,
                             note: noteController.text,
@@ -109,11 +112,11 @@ class _NewTaskPageState extends State<NewTaskPage> {
                             category: category);
                         widget.addTask.call(todo);
                         AutoRouter.of(context).pop();
-                      }},
-                    ),
-                  )
-                ])
-              ],
-            )));
+                      }
+                    },
+                  )))
+                ])),
+          ]),
+        ));
   }
 }

@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       "icon": FlutterIcons.running_faw5s,
       "tasks": exercise
     },
-    {"category": "Home", "icon": Icons.home, "tasks": exercise},
+    {"category": "Home", "icon": Icons.home, "tasks": home},
     {"category": "Travel", "icon": FlutterIcons.plane_faw, "tasks": travel},
     {"category": "Shopping", "icon": Icons.shopping_cart, "tasks": shopping},
     {"category": "Leisure", "icon": Icons.park, "tasks": leisure},
@@ -34,12 +34,6 @@ class _HomePageState extends State<HomePage> {
   static List shopping = [];
   static List leisure = [];
   static List all = [];
-
-  _onTodoToggle(Todo todo, bool isChecked) {
-    setState(() {
-      todo.isDone = isChecked;
-    });
-  }
 
   _addTask(Todo todo) {
     if (todo != null) {
@@ -55,11 +49,13 @@ class _HomePageState extends State<HomePage> {
           });
           break;
         case "Exercise":
+        print("add exercise");
           setState(() {
             exercise.add(todo);
           });
           break;
         case "Home":
+        print("add home");
           setState(() {
             home.add(todo);
           });
@@ -98,11 +94,13 @@ class _HomePageState extends State<HomePage> {
           });
           break;
         case "Exercise":
+        print("remove exercise");
           setState(() {
             exercise.removeWhere((element) => element == todo);
           });
           break;
         case "Home":
+          print("remove home");
           setState(() {
             home.removeWhere((element) => element == todo);
           });
@@ -160,7 +158,9 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Column(
+      body: Container(
+        color: Colors.white,
+        child:Column(
         children: [
           Container(
               alignment: Alignment.centerLeft,
@@ -185,10 +185,9 @@ class _HomePageState extends State<HomePage> {
                             tasks: categories[i]["tasks"],
                             removeTask:removeTask,
                             parentContext: context,
-                            onTodoToggle: _onTodoToggle,
                           ))))
         ],
-      ),
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.router.push(NewTaskPageRoute(

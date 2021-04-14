@@ -7,26 +7,24 @@ class GridButton extends StatelessWidget {
       {this.icon,
       this.category,
       this.tasks,
-      this.onTodoToggle,
       this.parentContext,
       this.removeTask,});
   final String category;
   final IconData icon;
   final List tasks;
-  final Function onTodoToggle;
   final BuildContext parentContext;
   final Function removeTask;
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
+      style: ButtonStyle(),
       onPressed: () {
         AutoRouter.of(parentContext).push(TaskListPageRoute(
           category: category,
           icon: icon,
           tasks: tasks,
           removeTask: removeTask,
-          onTodoToggle: onTodoToggle,
         ));
       },
       child: Column(
