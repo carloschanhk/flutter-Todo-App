@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'Todo.dart';
+import '../model/Todo.dart';
+import 'package:provider/provider.dart';
+import '../model/todo_list.dart';
 
 class TaskListPage extends StatefulWidget {
-  TaskListPage({this.icon, this.category, this.tasks, this.removeTask});
+  TaskListPage({this.icon, this.category, this.tasks});
   final String category;
   final IconData icon;
   List tasks;
-  final Function removeTask;
 
   @override
   _TaskListPageState createState() => _TaskListPageState();
@@ -23,6 +24,7 @@ class _TaskListPageState extends State<TaskListPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    Function removeTask = context.watch<TodoListModel>().removeTask;
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
@@ -80,7 +82,7 @@ class _TaskListPageState extends State<TaskListPage> {
                 return Dismissible(
                     key: Key(todoItem.title),
                     onDismissed: (direction) {
-                      widget.removeTask.call(todoItem, i);
+                      removeTask(todoItem, i);
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("${todoItem.title} removed")));
                     },

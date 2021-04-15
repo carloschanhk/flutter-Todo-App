@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'router.gr.dart';
+import 'package:provider/provider.dart';
+import 'model/todo_list.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => TodoListModel(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'new_task_page.dart';
+import '../pages/new_task_page.dart';
 
 class AddButton extends StatelessWidget {
 

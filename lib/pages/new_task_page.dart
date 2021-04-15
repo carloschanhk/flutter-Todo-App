@@ -1,14 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'Todo.dart';
-import 'category_button.dart';
-import 'time_button.dart';
+import 'package:tutorial_1/model/todo_list.dart';
+import '../model/Todo.dart';
+import '../buttons/category_button.dart';
+import '../buttons/time_button.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class NewTaskPage extends StatefulWidget {
-  NewTaskPage({this.categories, this.addTask});
-  final List categories;
-  final Function addTask;
   @override
   _NewTaskPageState createState() => _NewTaskPageState();
 }
@@ -35,8 +34,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-        //resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text("New Task", style: TextStyle(color: Colors.black)),
@@ -82,7 +81,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
                   ),
                   Container(
                     child: CategoryButton(
-                      categories: widget.categories,
                       selectCategory: selectCategory,
                     ),
                   ),
@@ -110,7 +108,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                             note: noteController.text,
                             todoTime: todoTime,
                             category: category);
-                        widget.addTask.call(todo);
+                        context.read<TodoListModel>().addTask(todo);
                         AutoRouter.of(context).pop();
                       }
                     },

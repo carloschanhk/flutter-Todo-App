@@ -1,7 +1,7 @@
 import 'package:auto_route/annotations.dart';
-import 'home_page.dart';
-import 'new_task_page.dart';
-import 'task_list_page.dart';
+import 'pages/home_page.dart';
+import 'pages/new_task_page.dart';
+import 'pages/task_list_page.dart';
 
 
 @AdaptiveAutoRouter(routes:[

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import '../model/todo_list.dart';
+import 'package:provider/provider.dart';
 
 class CategoryButton extends StatelessWidget {
-  CategoryButton({this.categories,this.selectCategory});
-  List categories;
+  CategoryButton({this.selectCategory});
   Function selectCategory;
   @override
   Widget build(BuildContext context) {
+    List categoryList = context.read<TodoListModel>().categories;
+
     return Container(
       child: DropdownButtonFormField(
         hint: Text("Category"),
@@ -20,7 +23,7 @@ class CategoryButton extends StatelessWidget {
           selectCategory(newValue);
         },
         items: List<String>.generate(
-                7, (i) => categories[i + 1]["category"])
+                7, (i) => categoryList[i + 1]["category"])
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(value: value, child: Text(value));
         }).toList(),
