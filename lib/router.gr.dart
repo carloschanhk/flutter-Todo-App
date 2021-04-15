@@ -6,9 +6,9 @@
 
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i5;
-import 'package:tutorial_1/pages/home_page.dart' as _i2;
-import 'package:tutorial_1/pages/new_task_page.dart' as _i3;
-import 'package:tutorial_1/pages/task_list_page.dart' as _i4;
+import 'pages/home_page.dart' as _i2;
+import 'pages/new_task_page.dart' as _i3;
+import 'pages/task_list_page.dart' as _i4;
 
 class FlutterRouter extends _i1.RootStackRouter {
   FlutterRouter();

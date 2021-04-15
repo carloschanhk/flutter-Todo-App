@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:tutorial_1/model/todo_list.dart';
+import '../model/todo_list.dart';
 import '../model/Todo.dart';
 import '../buttons/category_button.dart';
 import '../buttons/time_button.dart';

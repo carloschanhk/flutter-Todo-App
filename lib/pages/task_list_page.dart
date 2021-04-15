@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tutorial_1/dialogs/details_dialog.dart';
 import '../model/Todo.dart';
 import 'package:provider/provider.dart';
 import '../model/todo_list.dart';

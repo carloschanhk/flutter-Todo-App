@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tutorial_1/router.gr.dart';
+import '../router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
 import '../model/todo_list.dart';
