@@ -4,7 +4,6 @@ import 'package:tutorial_1/model/todo_list.dart';
 import '../model/Todo.dart';
 import '../buttons/category_button.dart';
 import '../buttons/time_button.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class NewTaskPage extends StatefulWidget {
@@ -16,7 +15,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
   final taskController = new TextEditingController();
   final noteController = new TextEditingController();
   static DateTime todoTime = DateTime.now();
-  String formattedDate = DateFormat("EEE MMM dd, kk:mm").format(todoTime);
   String category;
   selectCategory(newValue) {
     setState(() {
@@ -27,7 +25,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
   setTime(newTime) {
     setState(() {
       todoTime = newTime;
-      formattedDate = DateFormat("EEE MMM dd, kk:mm").format(todoTime);
     });
   }
 
@@ -59,7 +56,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                       }
                     },
                     controller: taskController,
-                    maxLines:8,
+                    maxLines:4,
                     decoration:
                         InputDecoration(hintText: "What are you planning?"),
                   )),
@@ -67,7 +64,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                     padding: EdgeInsets.only(top:20,bottom:5),
                       child: TimeButton(
                     setTime: setTime,
-                    formattedDate: formattedDate,
+                    todoTime: todoTime,
                   )),
                   Container(
                     padding: EdgeInsets.only(bottom:5),

@@ -28,7 +28,6 @@ class TodoListModel extends ChangeNotifier {
 
   List get categories => _categories;
 
-
   void addTask(Todo todo) {
     if (todo != null) {
       switch (todo.category) {
@@ -59,7 +58,7 @@ class TodoListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeTask(todo, index) {
+  void removeTask(todo) {
     switch (todo.category) {
       case "Work":
         print("work removed");

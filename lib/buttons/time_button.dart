@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class TimeButton extends StatelessWidget {
-  TimeButton({this.setTime,this.formattedDate});
+  TimeButton({this.setTime,this.todoTime});
   Function setTime;
-  String formattedDate;
+  DateTime todoTime;
+  
   @override
   Widget build(BuildContext context) {
+    String formattedTime = DateFormat("EEE MMM dd, kk:mm").format(todoTime);
+    print("$todoTime inside button");
     return Row(
       children: [
         Icon(Icons.alarm, color: Colors.black54),
@@ -15,11 +19,12 @@ class TimeButton extends StatelessWidget {
           child: TextButton(
               onPressed: () {
                 DatePicker.showDateTimePicker(context, showTitleActions: true,
+                    currentTime: todoTime,
                     onConfirm: (date) {
                       setTime(date);
                 },);
               },
-              child: Text("$formattedDate")),
+              child: Text("$formattedTime")),
         )
       ],
     );

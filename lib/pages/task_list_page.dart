@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tutorial_1/dialogs/details_dialog.dart';
 import '../model/Todo.dart';
 import 'package:provider/provider.dart';
 import '../model/todo_list.dart';
+import '../dialogs/details_dialog.dart';
 
 class TaskListPage extends StatefulWidget {
   TaskListPage({this.icon, this.category, this.tasks});
@@ -21,7 +23,24 @@ class _TaskListPageState extends State<TaskListPage> {
     });
   }
 
-  final _formKey = GlobalKey<FormState>();
+  _editTitle(Todo todo, String newTitle) {
+    setState(() {
+      todo.title = newTitle;
+    });
+  }
+
+  _editTime(Todo todo, DateTime newTime) {
+    setState(() {
+      todo.todoTime = newTime;
+    });
+  }
+
+  _editNote(Todo todo, String newNote) {
+    setState(() {
+      todo.note = newNote;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Function removeTask = context.watch<TodoListModel>().removeTask;
@@ -70,6 +89,7 @@ class _TaskListPageState extends State<TaskListPage> {
         ),
         Expanded(
             child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20), topLeft: Radius.circular(20)),
@@ -82,7 +102,7 @@ class _TaskListPageState extends State<TaskListPage> {
                 return Dismissible(
                     key: Key(todoItem.title),
                     onDismissed: (direction) {
-                      removeTask(todoItem, i);
+                      removeTask(todoItem);
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("${todoItem.title} removed")));
                     },
@@ -98,73 +118,15 @@ class _TaskListPageState extends State<TaskListPage> {
                         onLongPress: () {
                           showDialog(
                               context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                    title: Text("${todoItem.title}"),
-                                    content: Stack(children: [
-                                      Container(
-                                          child: Text(
-                                        "Time: $formattedDate",
-                                        style:
-                                            TextStyle(color: Colors.red[300]),
-                                      )),
-                                      Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 30),
-                                          child: Text("Note: ${todoItem.note}"))
-                                    ]),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    AlertDialog(
-                                                      title: Text("Edit Todo"),
-                                                      content: Form(
-                                                          key: _formKey,
-                                                          child:
-                                                              Stack(children: [
-                                                            TextFormField(
-                                                              validator:
-                                                                  (value) {
-                                                                if (value
-                                                                    .isEmpty) {
-                                                                  return "Please enter your task!";
-                                                                } else {
-                                                                  return null;
-                                                                }
-                                                              },
-                                                              controller:
-                                                                  new TextEditingController(),
-                                                              maxLines: 2,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                      hintText:
-                                                                          "What are you planning?"),
-                                                            ),
-                                                            
-                                                          ])),
-                                                      actions: [
-                                                        TextButton(
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                            child:
-                                                                Text("Cancel"))
-                                                      ],
-                                                    ));
-                                          },
-                                          child: Text("Edit")),
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text("OK")),
-                                    ],
-                                  ));
+                              builder: (BuildContext context) {
+                                context.watch<TodoListModel>();
+
+                                return DetailsDialog(
+                                    todo: todoItem,
+                                    editNote: _editNote,
+                                    editTime: _editTime,
+                                    editTitle: _editTitle);
+                              });
                         },
                         child: CheckboxListTile(
                             value: todoItem.isDone,
