@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'router.gr.dart';
 import 'package:provider/provider.dart';
 import 'model/todo_list.dart';
+import 'model/select_list.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (context) => TodoListModel(), child: MyApp()));
+  runApp(MultiProvider(
+    providers: [
+    ChangeNotifierProvider(create: (context) => TodoListModel()),
+    ChangeNotifierProvider(create: (context) => SelectListModel())
+    ],
+    child:MyApp()
+  ));
+
+  // runApp(ChangeNotifierProvider(
+  //     create: (context) => TodoListModel(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

@@ -17,9 +17,7 @@ class GridButton extends StatelessWidget {
       style: ButtonStyle(),
       onPressed: () {
         AutoRouter.of(context).push(TaskListPageRoute(
-          category: categoryObject["category"],
-          icon: categoryObject["icon"],
-          tasks: categoryObject["tasks"],
+          index: index,
         ));
       },
       child: Column(

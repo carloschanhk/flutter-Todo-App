@@ -5,10 +5,9 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
-import 'package:flutter/material.dart' as _i5;
-import 'pages/home_page.dart' as _i2;
-import 'pages/new_task_page.dart' as _i3;
-import 'pages/task_list_page.dart' as _i4;
+import 'package:todo/pages/home_page.dart' as _i2;
+import 'package:todo/pages/new_task_page.dart' as _i3;
+import 'package:todo/pages/task_list_page.dart' as _i4;
 
 class FlutterRouter extends _i1.RootStackRouter {
   FlutterRouter();
@@ -25,9 +24,7 @@ class FlutterRouter extends _i1.RootStackRouter {
       var args = entry.routeData
           .argsAs<TaskListPageRouteArgs>(orElse: () => TaskListPageRouteArgs());
       return _i1.AdaptivePage(
-          entry: entry,
-          child: _i4.TaskListPage(
-              icon: args.icon, category: args.category, tasks: args.tasks));
+          entry: entry, child: _i4.TaskListPage(index: args.index));
     }
   };
 
@@ -52,21 +49,15 @@ class NewTaskPageRoute extends _i1.PageRouteInfo {
 }
 
 class TaskListPageRoute extends _i1.PageRouteInfo<TaskListPageRouteArgs> {
-  TaskListPageRoute({_i5.IconData icon, String category, List<dynamic> tasks})
+  TaskListPageRoute({int index})
       : super(name,
-            path: '/task-list-page',
-            args: TaskListPageRouteArgs(
-                icon: icon, category: category, tasks: tasks));
+            path: '/task-list-page', args: TaskListPageRouteArgs(index: index));
 
   static const String name = 'TaskListPageRoute';
 }
 
 class TaskListPageRouteArgs {
-  const TaskListPageRouteArgs({this.icon, this.category, this.tasks});
+  const TaskListPageRouteArgs({this.index});
 
-  final _i5.IconData icon;
-
-  final String category;
-
-  final List<dynamic> tasks;
+  final int index;
 }

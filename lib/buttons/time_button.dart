@@ -10,7 +10,6 @@ class TimeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedTime = DateFormat("EEE MMM dd, kk:mm").format(todoTime);
-    print("$todoTime inside button");
     return Row(
       children: [
         Icon(Icons.alarm, color: Colors.black54),

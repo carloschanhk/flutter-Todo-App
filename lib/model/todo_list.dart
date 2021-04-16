@@ -61,7 +61,6 @@ class TodoListModel extends ChangeNotifier {
   void removeTask(todo) {
     switch (todo.category) {
       case "Work":
-        print("work removed");
         work.removeWhere((element) => element == todo);
         break;
       case "Health":

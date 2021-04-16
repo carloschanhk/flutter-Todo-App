@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/display_list/select_list.dart';
 import '../model/Todo.dart';
 import 'package:provider/provider.dart';
 import '../model/todo_list.dart';
 import '../dialogs/details_dialog.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../display_list/checkbox_list.dart';
+import 'package:todo/model/select_list.dart';
 
 class TaskListPage extends StatefulWidget {
-  TaskListPage({this.icon, this.category, this.tasks});
-  final String category;
-  final IconData icon;
-  List tasks;
+  TaskListPage({this.index});
+  final int index;
 
   @override
   _TaskListPageState createState() => _TaskListPageState();
@@ -40,9 +42,12 @@ class _TaskListPageState extends State<TaskListPage> {
     });
   }
 
+  bool isSelectMode = false;
+
   @override
   Widget build(BuildContext context) {
-    Function removeTask = context.watch<TodoListModel>().removeTask;
+    List categoryList = context.watch<TodoListModel>().categories;
+    final categoryObject = categoryList[widget.index];
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
@@ -51,8 +56,99 @@ class _TaskListPageState extends State<TaskListPage> {
         iconTheme: IconThemeData(color: Colors.white),
         actions: [
           Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Icon(Icons.menu))
+            padding: EdgeInsets.only(right: 20),
+            child: isSelectMode
+                ? IconButton(
+                    icon: Icon(Icons.delete, color: Colors.white),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                                content: Text(
+                                    "Are you sure to delete selected items?"),
+                                actions: [
+                                  TextButton(
+                                    child: Text("Cancel"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text("Confirm"),
+                                    onPressed: () {
+                                      List selectedList = context
+                                          .read<SelectListModel>()
+                                          .selectedList;
+                                      for (var item in selectedList) {
+                                        context
+                                            .read<TodoListModel>()
+                                            .removeTask(item);
+                                      }
+                                      context
+                                          .read<SelectListModel>()
+                                          .clearSelected();
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ]);
+                          });
+                    },
+                  )
+                : null,
+          ),
+          Container(
+            padding: EdgeInsets.only(right: 20),
+            child: isSelectMode
+                ? TextButton(
+                    onPressed: () {
+                      setState(() {
+                        isSelectMode = !isSelectMode;
+                      });
+                    },
+                    child:
+                        Text('Cancel', style: TextStyle(color: Colors.white)),
+                  )
+                : PopupMenuButton(
+                    icon: SvgPicture.asset(
+                      "assets/icons/more_vert_black_24dp.svg",
+                      semanticsLabel: "Menu Button",
+                    ),
+                    offset: Offset(0, 20),
+                    onSelected: (value) {
+                      print("selected");
+                      switch (value) {
+                        case 1:
+                          break;
+                        case 2:
+                          print("in select");
+                          setState(() {
+                            isSelectMode = !isSelectMode;
+                          });
+                          break;
+                      }
+                    },
+                    itemBuilder: (BuildContext context) {
+                      List<PopupMenuEntry<dynamic>> list = [];
+                      list.add(PopupMenuItem(
+                          value: 1,
+                          child: Container(
+                              child: Text(
+                            "New Project",
+                            style: TextStyle(color: Colors.blue),
+                          ))));
+                      list.add(PopupMenuDivider(
+                        height: 10,
+                      ));
+                      list.add(PopupMenuItem(
+                        value: 2,
+                        child: Text("Select",
+                            style: TextStyle(color: Colors.blue)),
+                      ));
+                      return list;
+                    },
+                  ),
+          )
         ],
       ),
       body: Column(children: [
@@ -67,19 +163,19 @@ class _TaskListPageState extends State<TaskListPage> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(100),
                     border: Border.all(width: 2, color: Colors.white)),
-                child: Icon(widget.icon, color: Colors.blue)),
+                child: Icon(categoryObject["icon"], color: Colors.blue)),
             Container(
               padding: EdgeInsets.only(top: 20),
               child: Column(children: [
                 Text(
-                  widget.category,
+                  categoryObject["category"],
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.w800),
                 ),
                 Text(
-                  "${widget.tasks.length} Tasks",
+                  "${categoryObject["tasks"].length} Tasks",
                   style: TextStyle(color: Colors.white, fontSize: 12),
                 )
               ]),
@@ -93,56 +189,29 @@ class _TaskListPageState extends State<TaskListPage> {
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20), topLeft: Radius.circular(20)),
               color: Colors.white),
-          child: ListView.builder(
-              itemBuilder: (context, i) {
-                final Todo todoItem = widget.tasks[i];
-                String formattedDate =
-                    DateFormat("EEE MMM dd, kk:mm").format(todoItem.todoTime);
-                return Dismissible(
-                    key: Key(todoItem.title),
-                    onDismissed: (direction) {
-                      removeTask(todoItem);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("${todoItem.title} removed")));
-                    },
-                    background: Container(
-                      alignment: Alignment.center,
-                      color: Colors.red,
-                      child: Text(
-                        "Remove",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ),
-                    child: GestureDetector(
-                        onLongPress: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                context.watch<TodoListModel>();
-
-                                return DetailsDialog(
-                                    todo: todoItem,
-                                    editNote: _editNote,
-                                    editTime: _editTime,
-                                    editTitle: _editTitle);
-                              });
-                        },
-                        child: CheckboxListTile(
-                            value: todoItem.isDone,
-                            title: Text(todoItem.title),
-                            subtitle: Text(
-                              formattedDate,
-                              style: TextStyle(color: Colors.red[300]),
-                            ),
-                            onChanged: (
-                              bool isChecked,
-                            ) {
-                              _onTodoToggle(todoItem, isChecked);
-                            })));
-              },
-              itemCount: widget.tasks.length),
+          child: isSelectMode
+              ? SelectList(categoryObject: categoryObject)
+              : CheckboxList(
+                  editTitle: _editTitle,
+                  editNote: _editNote,
+                  editTime: _editTime,
+                  onTodoToggle: _onTodoToggle,
+                  categoryObject: categoryObject,
+                ),
         ))
       ]),
+      bottomNavigationBar: isSelectMode
+          ? BottomAppBar(
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
+                border: Border.all(width: 5,color: Colors.yellow),
+                color: Colors.black
+              ),
+
+            child: Text("123",style: TextStyle(color: Colors.white),)))
+          : null,
     );
   }
 }

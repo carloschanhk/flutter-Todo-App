@@ -24,6 +24,7 @@ class _DetailsDialogState extends State<DetailsDialog> {
   TextEditingController noteController;
   @override
   void initState() {
+    print("hi from dialog");
     todoTime = widget.todo.todoTime;
     titleController = new TextEditingController(text: widget.todo.title);
     noteController = new TextEditingController(text: widget.todo.note);
@@ -41,9 +42,13 @@ class _DetailsDialogState extends State<DetailsDialog> {
       title: Text("Todo Details"),
       content: Form(
           key: _formKey,
-          child: Stack(children: [
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
             Container(
                 child: TextFormField(
+                  minLines: 1,
+                  maxLines: 3,
               validator: (value) {
                 if (value.isEmpty) {
                   return "Please enter your task!";
@@ -52,23 +57,22 @@ class _DetailsDialogState extends State<DetailsDialog> {
                 }
               },
               controller: titleController,
-              maxLines: 1,
-              decoration: InputDecoration(suffixIcon: Icon(Icons.edit)),
+              decoration: InputDecoration(suffixIcon: Icon(Icons.edit),icon: Icon(Icons.assignment)),
             )),
             Container(
-                padding: EdgeInsets.only(top: 60),
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: TimeButton(
                   setTime: setTime,
                   todoTime: todoTime,
                 )),
             Container(
-              padding: EdgeInsets.only(top: 120),
               child: TextFormField(
+                minLines: 1,
+                maxLines: 3,
                 controller: noteController,
                 decoration: InputDecoration(
                     suffixIcon: Icon(Icons.edit),
-                    icon: Icon(Icons.note),
-                    border: InputBorder.none),
+                    icon: Icon(Icons.note),),
               ),
             )
           ])),
