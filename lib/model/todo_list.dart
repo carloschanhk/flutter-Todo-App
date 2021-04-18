@@ -4,18 +4,54 @@ import 'package:flutter_icons/flutter_icons.dart';
 
 class TodoListModel extends ChangeNotifier {
   final List _categories = [
-    {"category": "All", "icon": Icons.assignment, "tasks": all},
-    {"category": "Work", "icon": Icons.work, "tasks": work},
-    {"category": "Health", "icon": Icons.favorite, "tasks": health},
+    {
+      "category": "All",
+      "icon": Icons.assignment,
+      "tasks": all,
+      "color": Colors.blue
+    },
+    {
+      "category": "Work",
+      "icon": Icons.work,
+      "tasks": work,
+      "color": Colors.brown
+    },
+    {
+      "category": "Health",
+      "icon": Icons.favorite,
+      "tasks": health,
+      "color": Colors.red
+    },
     {
       "category": "Exercise",
       "icon": FlutterIcons.running_faw5s,
-      "tasks": exercise
+      "tasks": exercise,
+      "color": Colors.lime
     },
-    {"category": "Home", "icon": Icons.home, "tasks": home},
-    {"category": "Travel", "icon": FlutterIcons.plane_faw, "tasks": travel},
-    {"category": "Shopping", "icon": Icons.shopping_cart, "tasks": shopping},
-    {"category": "Leisure", "icon": Icons.park, "tasks": leisure},
+    {
+      "category": "Home",
+      "icon": Icons.home,
+      "tasks": home,
+      "color": Colors.orange
+    },
+    {
+      "category": "Travel",
+      "icon": FlutterIcons.plane_faw,
+      "tasks": travel,
+      "color": Colors.lightGreen
+    },
+    {
+      "category": "Shopping",
+      "icon": Icons.shopping_cart,
+      "tasks": shopping,
+      "color": Colors.purple[300]
+    },
+    {
+      "category": "Leisure",
+      "icon": Icons.park,
+      "tasks": leisure,
+      "color": Colors.green[900]
+    },
   ];
   static List work = [];
   static List health = [];

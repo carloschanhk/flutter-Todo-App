@@ -5,13 +5,14 @@ import 'package:provider/provider.dart';
 import '../model/todo_list.dart';
 
 class GridButton extends StatelessWidget {
-  GridButton(
-      {this.index,});
+  GridButton({
+    this.index,
+  });
   final int index;
 
   @override
   Widget build(BuildContext context) {
-    List categoryList= context.watch<TodoListModel>().categories;
+    List categoryList = context.watch<TodoListModel>().categories;
     final categoryObject = categoryList[index];
     return OutlinedButton(
       style: ButtonStyle(),
@@ -22,11 +23,17 @@ class GridButton extends StatelessWidget {
       },
       child: Column(
         children: [
-          Icon(categoryObject["icon"],size: 40,),
+          Icon(
+            categoryObject["icon"],
+            size: 40,
+            color: categoryObject["color"],
+          ),
           Container(
               child: Column(children: [
-            Text(categoryObject["category"], style: TextStyle(fontSize: 24, color: Colors.black)),
-            Text('${categoryObject["tasks"].length} Tasks', style: TextStyle(color: Colors.black))
+            Text(categoryObject["category"],
+                style: TextStyle(fontSize: 24, color: Colors.black)),
+            Text('${categoryObject["tasks"].length} Tasks',
+                style: TextStyle(color: Colors.black))
           ]))
         ],
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

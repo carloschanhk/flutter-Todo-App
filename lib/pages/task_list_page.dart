@@ -6,6 +6,8 @@ import '../model/todo_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../display_list/checkbox_list.dart';
 import 'package:todo/model/select_list.dart';
+import 'package:auto_route/auto_route.dart';
+import '../router.gr.dart';
 
 class TaskListPage extends StatefulWidget {
   TaskListPage({this.index});
@@ -47,10 +49,10 @@ class _TaskListPageState extends State<TaskListPage> {
     List categoryList = context.watch<TodoListModel>().categories;
     final categoryObject = categoryList[widget.index];
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: categoryObject["color"],
       appBar: AppBar(
         leading: isSelectMode ? Container() : null,
-        backgroundColor: Colors.blue,
+        backgroundColor: categoryObject["color"],
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
         actions: [
@@ -114,13 +116,14 @@ class _TaskListPageState extends State<TaskListPage> {
                   )
                 : PopupMenuButton(
                     icon: SvgPicture.asset(
-                      "assets/icons/more_vert_black_24dp.svg",
+                      "assets/icons/more_vert_white_24dp.svg",
                       semanticsLabel: "Menu Button",
                     ),
                     offset: Offset(0, 20),
                     onSelected: (value) {
                       switch (value) {
                         case 1:
+                          context.router.push(NewTaskPageRoute());
                           break;
                         case 2:
                           setState(() {
@@ -157,6 +160,7 @@ class _TaskListPageState extends State<TaskListPage> {
           padding: EdgeInsets.only(left: 30, top: 15),
           height: 130,
           alignment: Alignment.topLeft,
+          color: categoryObject["color"],
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
                 padding: EdgeInsets.all(5),
@@ -164,7 +168,8 @@ class _TaskListPageState extends State<TaskListPage> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(100),
                     border: Border.all(width: 2, color: Colors.white)),
-                child: Icon(categoryObject["icon"], color: Colors.blue)),
+                child: Icon(categoryObject["icon"],
+                    color: categoryObject["color"])),
             Container(
               padding: EdgeInsets.only(top: 20),
               child: Column(children: [
@@ -188,7 +193,7 @@ class _TaskListPageState extends State<TaskListPage> {
           padding: EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                  topRight: Radius.circular(30), topLeft: Radius.circular(30)),
               color: Colors.white),
           child: isSelectMode
               ? SelectList(categoryObject: categoryObject)
