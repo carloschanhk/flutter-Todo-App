@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:todo/display_list/select_list.dart';
 import '../model/Todo.dart';
 import 'package:provider/provider.dart';
 import '../model/todo_list.dart';
-import '../dialogs/details_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../display_list/checkbox_list.dart';
 import 'package:todo/model/select_list.dart';
@@ -51,6 +49,7 @@ class _TaskListPageState extends State<TaskListPage> {
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
+        leading: isSelectMode ? Container() : null,
         backgroundColor: Colors.blue,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
@@ -89,6 +88,9 @@ class _TaskListPageState extends State<TaskListPage> {
                                           .read<SelectListModel>()
                                           .clearSelected();
                                       Navigator.of(context).pop();
+                                      setState(() {
+                                        isSelectMode = !isSelectMode;
+                                      });
                                     },
                                   ),
                                 ]);
@@ -102,6 +104,7 @@ class _TaskListPageState extends State<TaskListPage> {
             child: isSelectMode
                 ? TextButton(
                     onPressed: () {
+                      context.read<SelectListModel>().clearSelected();
                       setState(() {
                         isSelectMode = !isSelectMode;
                       });
@@ -116,12 +119,10 @@ class _TaskListPageState extends State<TaskListPage> {
                     ),
                     offset: Offset(0, 20),
                     onSelected: (value) {
-                      print("selected");
                       switch (value) {
                         case 1:
                           break;
                         case 2:
-                          print("in select");
                           setState(() {
                             isSelectMode = !isSelectMode;
                           });
@@ -202,15 +203,21 @@ class _TaskListPageState extends State<TaskListPage> {
       ]),
       bottomNavigationBar: isSelectMode
           ? BottomAppBar(
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
-                border: Border.all(width: 5,color: Colors.yellow),
-                color: Colors.black
-              ),
-
-            child: Text("123",style: TextStyle(color: Colors.white),)))
+              child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                      // borderRadius: BorderRadius.only(
+                      //     topLeft: Radius.circular(30),
+                      //     topRight: Radius.circular(30)),
+                      // border: Border.all(width: 5, color: Colors.yellow),
+                      color: Colors.blue),
+                  child: Container(
+                      padding: EdgeInsets.only(left: 40),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "${context.watch<SelectListModel>().selectedList.length} items selected",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ))))
           : null,
     );
   }

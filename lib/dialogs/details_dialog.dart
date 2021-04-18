@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import '../buttons/time_button.dart';
-import '../model/todo_list.dart';
 import '../model/Todo.dart';
 import 'package:auto_route/auto_route.dart';
-
 
 class DetailsDialog extends StatefulWidget {
   DetailsDialog({this.editTitle, this.editNote, this.editTime, this.todo});
@@ -24,31 +22,29 @@ class _DetailsDialogState extends State<DetailsDialog> {
   TextEditingController noteController;
   @override
   void initState() {
-    print("hi from dialog");
     todoTime = widget.todo.todoTime;
     titleController = new TextEditingController(text: widget.todo.title);
     noteController = new TextEditingController(text: widget.todo.note);
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     setTime(newTime) {
       setState(() {
-       todoTime = newTime;
+        todoTime = newTime;
       });
     }
+
     return AlertDialog(
       title: Text("Todo Details"),
       content: Form(
           key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
             Container(
                 child: TextFormField(
-                  minLines: 1,
-                  maxLines: 3,
+              minLines: 1,
+              maxLines: 3,
               validator: (value) {
                 if (value.isEmpty) {
                   return "Please enter your task!";
@@ -57,7 +53,8 @@ class _DetailsDialogState extends State<DetailsDialog> {
                 }
               },
               controller: titleController,
-              decoration: InputDecoration(suffixIcon: Icon(Icons.edit),icon: Icon(Icons.assignment)),
+              decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.edit), icon: Icon(Icons.assignment)),
             )),
             Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
@@ -71,8 +68,9 @@ class _DetailsDialogState extends State<DetailsDialog> {
                 maxLines: 3,
                 controller: noteController,
                 decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.edit),
-                    icon: Icon(Icons.note),),
+                  suffixIcon: Icon(Icons.edit),
+                  icon: Icon(Icons.note),
+                ),
               ),
             )
           ])),

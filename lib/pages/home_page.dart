@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import '../buttons/gridbutton.dart';
 import '../router.gr.dart';
 import 'package:auto_route/auto_route.dart';
-import '../model/todo_list.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,8 +9,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -73,8 +69,7 @@ class _HomePageState extends State<HomePage> {
           )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.router.push(NewTaskPageRoute(
-          ));
+          context.router.push(NewTaskPageRoute());
         },
         child: Icon(Icons.add),
       ),

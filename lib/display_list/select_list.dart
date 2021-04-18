@@ -22,7 +22,7 @@ class _SelectListState extends State<SelectList> {
     controller.set(todoList.length);
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -34,7 +34,7 @@ class _SelectListState extends State<SelectList> {
           return MultiSelectItem(
               isSelecting: true,
               onSelected: () {
-                if (controller.isSelected(i)){
+                if (controller.isSelected(i)) {
                   context.read<SelectListModel>().removeSelected(todoList[i]);
                 } else {
                   context.read<SelectListModel>().addSelected(todoList[i]);
@@ -46,9 +46,11 @@ class _SelectListState extends State<SelectList> {
               child: Container(
                 child: ListTile(
                   leading: Container(
-                    alignment: Alignment.centerLeft,
-                    width: 20,
-                    child:controller.isSelected(i)? Icon(Icons.check):Icon(Icons.add_circle_outline)),
+                      alignment: Alignment.centerLeft,
+                      width: 20,
+                      child: controller.isSelected(i)
+                          ? Icon(Icons.check)
+                          : Icon(Icons.crop_square)),
                   title: Text(
                     todoItem.title,
                     style: TextStyle(
