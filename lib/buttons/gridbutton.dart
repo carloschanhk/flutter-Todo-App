@@ -15,7 +15,13 @@ class GridButton extends StatelessWidget {
     List categoryList = context.watch<TodoListModel>().categories;
     final categoryObject = categoryList[index];
     return OutlinedButton(
-      style: ButtonStyle(),
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+          shadowColor: MaterialStateProperty.all(Colors.black54),
+          elevation: MaterialStateProperty.all(20),
+          side: MaterialStateProperty.all(BorderSide.none),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
       onPressed: () {
         AutoRouter.of(context).push(TaskListPageRoute(
           index: index,
