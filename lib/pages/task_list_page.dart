@@ -195,27 +195,27 @@ class _TaskListPageState extends State<TaskListPage> {
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(30), topLeft: Radius.circular(30)),
               color: Colors.white),
-          child: isSelectMode
-              ? SelectList(categoryObject: categoryObject)
-              : CheckboxList(
-                  editTitle: _editTitle,
-                  editNote: _editNote,
-                  editTime: _editTime,
-                  onTodoToggle: _onTodoToggle,
-                  categoryObject: categoryObject,
-                ),
+          child: AnimatedCrossFade(
+            crossFadeState: isSelectMode
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: Duration(milliseconds: 200),
+            firstChild: CheckboxList(
+              editTitle: _editTitle,
+              editNote: _editNote,
+              editTime: _editTime,
+              onTodoToggle: _onTodoToggle,
+              categoryObject: categoryObject,
+            ),
+            secondChild: SelectList(categoryObject: categoryObject),
+          ),
         ))
       ]),
       bottomNavigationBar: isSelectMode
           ? BottomAppBar(
               child: Container(
                   height: 50,
-                  decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.only(
-                      //     topLeft: Radius.circular(30),
-                      //     topRight: Radius.circular(30)),
-                      // border: Border.all(width: 5, color: Colors.yellow),
-                      color: Colors.blue),
+                  decoration: BoxDecoration(color: Colors.blue),
                   child: Container(
                       padding: EdgeInsets.only(left: 40),
                       alignment: Alignment.centerLeft,

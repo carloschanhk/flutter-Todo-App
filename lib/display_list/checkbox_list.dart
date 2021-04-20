@@ -23,6 +23,8 @@ class CheckboxList extends StatelessWidget {
     Function removeTask = context.watch<TodoListModel>().removeTask;
 
     return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         itemCount: categoryObject["tasks"].length,
         itemBuilder: (context, i) {
           final Todo todoItem = categoryObject["tasks"][i];

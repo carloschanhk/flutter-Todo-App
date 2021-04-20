@@ -26,6 +26,8 @@ class _SelectListState extends State<SelectList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         itemCount: todoList.length,
         itemBuilder: (context, i) {
           final Todo todoItem = todoList[i];
