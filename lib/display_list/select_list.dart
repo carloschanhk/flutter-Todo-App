@@ -4,10 +4,11 @@ import 'package:todo/model/Todo.dart';
 import 'package:multi_select_item/multi_select_item.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/model/select_list.dart';
+import '../model/todo_list.dart';
 
 class SelectList extends StatefulWidget {
-  SelectList({this.categoryObject});
-  final categoryObject;
+  SelectList({this.index});
+  final index;
   @override
   _SelectListState createState() => _SelectListState();
 }
@@ -18,7 +19,7 @@ class _SelectListState extends State<SelectList> {
 
   @override
   void initState() {
-    todoList = widget.categoryObject["tasks"];
+    todoList = context.read<TodoListModel>().getTasks(widget.index);
     controller.set(todoList.length);
     super.initState();
   }
@@ -26,51 +27,52 @@ class _SelectListState extends State<SelectList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: todoList.length,
-        itemBuilder: (context, i) {
-          final Todo todoItem = todoList[i];
-          String formattedDate =
-              DateFormat("EEE MMM dd, kk:mm").format(todoItem.todoTime);
-          return MultiSelectItem(
-              isSelecting: true,
-              onSelected: () {
-                if (controller.isSelected(i)) {
-                  context.read<SelectListModel>().removeSelected(todoList[i]);
-                } else {
-                  context.read<SelectListModel>().addSelected(todoList[i]);
-                }
-                setState(() {
-                  controller.toggle(i);
-                });
-              },
-              child: Container(
-                child: ListTile(
-                  leading: Container(
-                      alignment: Alignment.centerLeft,
-                      width: 20,
-                      child: controller.isSelected(i)
-                          ? Icon(Icons.check)
-                          : Icon(Icons.crop_square)),
-                  title: Text(
-                    todoItem.title,
-                    style: TextStyle(
-                        color: todoItem.isDone ? Colors.grey : null,
-                        decoration: todoItem.isDone
-                            ? TextDecoration.lineThrough
-                            : null),
-                  ),
-                  subtitle: Text(
-                    formattedDate,
-                    style: TextStyle(
-                        color: todoItem.isDone ? Colors.grey : Colors.red[300]),
-                  ),
-                ),
-                decoration: controller.isSelected(i)
-                    ? BoxDecoration(color: Colors.grey[300])
-                    : BoxDecoration(),
-              ));
-        });
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: todoList.length,
+      itemBuilder: (context, i) {
+        final Todo todoItem = todoList[i];
+        String formattedDate =
+            DateFormat("EEE MMM dd, kk:mm").format(todoItem.todoTime);
+        return MultiSelectItem(
+          isSelecting: true,
+          onSelected: () {
+            if (controller.isSelected(i)) {
+              context.read<SelectListModel>().removeSelected(todoList[i]);
+            } else {
+              context.read<SelectListModel>().addSelected(todoList[i]);
+            }
+            setState(() {
+              controller.toggle(i);
+            });
+          },
+          child: Container(
+            child: ListTile(
+              leading: Container(
+                  alignment: Alignment.centerLeft,
+                  width: 20,
+                  child: controller.isSelected(i)
+                      ? Icon(Icons.check)
+                      : Icon(Icons.crop_square)),
+              title: Text(
+                todoItem.title,
+                style: TextStyle(
+                    color: todoItem.isDone ? Colors.grey : null,
+                    decoration:
+                        todoItem.isDone ? TextDecoration.lineThrough : null),
+              ),
+              subtitle: Text(
+                formattedDate,
+                style: TextStyle(
+                    color: todoItem.isDone ? Colors.grey : Colors.red[300]),
+              ),
+            ),
+            decoration: controller.isSelected(i)
+                ? BoxDecoration(color: Colors.grey[300])
+                : BoxDecoration(),
+          ),
+        );
+      },
+    );
   }
 }

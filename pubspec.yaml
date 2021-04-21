@@ -37,6 +37,8 @@ dependencies:
   provider: ^5.0.0
   flutter_svg: ^0.21.0+1
   multi_select_item: ^1.0.3
+  pedantic: ^1.11.0
+  enum_to_string: ^2.0.1
 
 dev_dependencies:
   flutter_test:

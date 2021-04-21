@@ -16,16 +16,17 @@ class _HomePageState extends State<HomePage> {
       key: _scaffoldKey,
       appBar: AppBar(
         leading: Container(
-            padding: EdgeInsets.only(left: 20),
-            child: IconButton(
-              icon: Icon(
-                Icons.menu,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                _scaffoldKey.currentState.openDrawer();
-              },
-            )),
+          padding: EdgeInsets.only(left: 20),
+          child: IconButton(
+            icon: Icon(
+              Icons.menu,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              _scaffoldKey.currentState.openDrawer();
+            },
+          ),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -33,40 +34,50 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: [
             DrawerHeader(
-                child: Text("Category",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                    )))
+              child: Text(
+                "Category",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                ),
+              ),
+            )
           ],
         ),
       ),
       body: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
-                  child: Text("Lists",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ))),
-              Expanded(
-                  child: GridView.count(
-                      padding: EdgeInsets.all(30),
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 20,
-                      children: List.generate(
-                          8,
-                          (i) => GridButton(
-                                index: i,
-                              ))))
-            ],
-          )),
+        color: Colors.white,
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
+              child: Text(
+                "Lists",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: GridView.count(
+                padding: EdgeInsets.all(30),
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 20,
+                children: List.generate(
+                  8,
+                  (i) => GridButton(
+                    index: i,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.router.push(NewTaskPageRoute());

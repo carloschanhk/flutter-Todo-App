@@ -29,6 +29,13 @@ class _DetailsDialogState extends State<DetailsDialog> {
   }
 
   @override
+  void dispose() {
+    titleController.dispose();
+    noteController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     setTime(newTime) {
       setState(() {
@@ -39,29 +46,35 @@ class _DetailsDialogState extends State<DetailsDialog> {
     return AlertDialog(
       title: Text("Todo Details"),
       content: Form(
-          key: _formKey,
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Container(
-                child: TextFormField(
-              minLines: 1,
-              maxLines: 3,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return "Please enter your task!";
-                } else {
-                  return null;
-                }
-              },
-              controller: titleController,
-              decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.edit), icon: Icon(Icons.assignment)),
-            )),
+              child: TextFormField(
+                minLines: 1,
+                maxLines: 3,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Please enter your task!";
+                  } else {
+                    return null;
+                  }
+                },
+                controller: titleController,
+                decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.edit),
+                  icon: Icon(Icons.assignment),
+                ),
+              ),
+            ),
             Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TimeButton(
-                  setTime: setTime,
-                  todoTime: todoTime,
-                )),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: TimeButton(
+                setTime: setTime,
+                todoTime: todoTime,
+              ),
+            ),
             Container(
               child: TextFormField(
                 minLines: 1,
@@ -72,8 +85,10 @@ class _DetailsDialogState extends State<DetailsDialog> {
                   icon: Icon(Icons.note),
                 ),
               ),
-            )
-          ])),
+            ),
+          ],
+        ),
+      ),
       actions: [
         TextButton(
             onPressed: () {
@@ -81,15 +96,16 @@ class _DetailsDialogState extends State<DetailsDialog> {
             },
             child: Text("Cancel")),
         TextButton(
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                widget.editNote(widget.todo, noteController.text);
-                widget.editTitle(widget.todo, titleController.text);
-                widget.editTime(widget.todo, todoTime);
-                AutoRouter.of(context).pop();
-              }
-            },
-            child: Text("Confirm"))
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              widget.editNote(widget.todo, noteController.text);
+              widget.editTitle(widget.todo, titleController.text);
+              widget.editTime(widget.todo, todoTime);
+              AutoRouter.of(context).pop();
+            }
+          },
+          child: Text("Confirm"),
+        ),
       ],
     );
   }
